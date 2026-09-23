@@ -1,0 +1,8 @@
+{
+  "Cart": {
+    "items": "{count, plural, one {# item} other {# items}}"
+  },
+  "Checkout": {
+    "pay": "Pay now"
+  }
+}

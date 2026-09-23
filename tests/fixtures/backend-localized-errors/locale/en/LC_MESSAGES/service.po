@@ -1,0 +1,2 @@
+msgid "The account is temporarily locked."
+msgstr "The account is temporarily locked."

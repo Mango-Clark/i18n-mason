@@ -1,0 +1,8 @@
+msgid ""
+msgstr ""
+"Language: ko\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "invoice_count"
+msgid_plural "invoice_count_plural"
+msgstr[0] "청구서 {count}개"

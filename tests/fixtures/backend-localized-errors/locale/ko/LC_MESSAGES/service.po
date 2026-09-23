@@ -1,0 +1,2 @@
+msgid "The account is temporarily locked."
+msgstr "계정이 일시적으로 잠겼습니다."

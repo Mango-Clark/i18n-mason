@@ -1,0 +1,5 @@
+{
+  "name": "fixture-i18next-project",
+  "scripts": { "build": "node scripts/copy-catalogs.mjs" },
+  "dependencies": { "i18next": "^25.0.0" }
+}

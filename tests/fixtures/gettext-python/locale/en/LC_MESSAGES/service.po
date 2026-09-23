@@ -1,0 +1,9 @@
+msgid ""
+msgstr ""
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "invoice_count"
+msgid_plural "invoice_count_plural"
+msgstr[0] "{count} invoice"
+msgstr[1] "{count} invoices"
