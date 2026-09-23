@@ -12,13 +12,13 @@ Defaults, public locale identifiers, routes, fallback, localization coverage, an
 
 ## Install into a project
 
-From this repository, install the skill into the current project's `.agent` directory:
+From this repository, install the skill into the current project's `.agents` directory:
 
 ```sh
 npm run build
 ```
 
-This copies the skill to `.agent/skills/i18n-mason`. To install into another project, pass its path:
+This copies the skill to `.agents/skills/i18n-mason`. To install into another project, pass its path:
 
 ```sh
 npm run build -- --project ../my-app
@@ -31,7 +31,7 @@ npm.cmd run build -- --project ..\my-app
 npm.cmd run build -- --project ..\my-app --force
 ```
 
-The command copies the complete skill directory, including future references or assets. Re-running it leaves an identical installation alone. If packaged files differ from an existing installation, it stops instead of overwriting local edits; use `npm run build -- --force` (or `npm.cmd run build -- --force` in PowerShell) to replace those packaged files. Extra files in the destination are preserved. The generated `.agent/` directory is git-ignored.
+The command copies the complete skill directory, including future references or assets. Re-running it leaves an identical installation alone. If packaged files differ from an existing installation, it stops instead of overwriting local edits; use `npm run build -- --force` (or `npm.cmd run build -- --force` in PowerShell) to replace those packaged files. Extra files in the destination are preserved. The generated `.agents/` directory is git-ignored.
 
 Invoke the installed skill for a locale architecture audit, a new locale, an i18n implementation, or a migration. Audit mode is read-only; implementation follows repository conventions and resolves consequential unknowns before dependent changes.
 

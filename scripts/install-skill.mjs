@@ -50,7 +50,7 @@ async function inspectInstallation(source, destination, sourceFiles) {
 }
 
 async function assertNoSymlinkComponents(project, destination) {
-  const components = [project, join(project, '.agent'), join(project, '.agent', 'skills'), destination];
+  const components = [project, join(project, '.agents'), join(project, '.agents', 'skills'), destination];
   for (const component of components) {
     try {
       if ((await lstat(component)).isSymbolicLink()) {
@@ -69,7 +69,7 @@ export async function installSkill({
 } = {}) {
   const resolvedSource = resolve(source);
   const resolvedProject = resolve(project);
-  const destination = join(resolvedProject, '.agent', 'skills', 'i18n-mason');
+  const destination = join(resolvedProject, '.agents', 'skills', 'i18n-mason');
   const sourceInfo = await lstat(resolvedSource);
   if (!sourceInfo.isDirectory()) throw new Error(`Skill source is not a directory: ${resolvedSource}`);
   try {

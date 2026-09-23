@@ -7,7 +7,7 @@ Keep changes aligned with the project contract in `goal.md`: inspect real codeba
 ## Development
 
 - Requires Node.js 23.6+; no install step or network access is required.
-- Run `npm run build` to install the skill locally into the ignored `.agent/skills/i18n-mason` directory.
+- Run `npm run build` to install the skill locally into the ignored `.agents/skills/i18n-mason` directory.
 - Run `npm test` and `npm run validate` after changes.
 - Keep the runtime `SKILL.md` concise; move conditional detail into focused linked docs.
 - Add heterogeneous evidence-based fixture cases when a regression involves a new architecture or source boundary. Avoid tests that only assert prose or headings.

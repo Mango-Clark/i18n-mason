@@ -12,13 +12,13 @@ English: [README.md](README.md)
 
 ## 프로젝트에 설치하기
 
-이 저장소에서 다음 명령을 실행하면 현재 프로젝트의 `.agent` 디렉터리에 스킬을 설치합니다.
+이 저장소에서 다음 명령을 실행하면 현재 프로젝트의 `.agents` 디렉터리에 스킬을 설치합니다.
 
 ```sh
 npm run build
 ```
 
-스킬은 `.agent/skills/i18n-mason`에 복사됩니다. 다른 프로젝트를 대상으로 하려면 경로를 지정하세요.
+스킬은 `.agents/skills/i18n-mason`에 복사됩니다. 다른 프로젝트를 대상으로 하려면 경로를 지정하세요.
 
 ```sh
 npm run build -- --project ../my-app
@@ -31,7 +31,7 @@ npm.cmd run build -- --project ..\my-app
 npm.cmd run build -- --project ..\my-app --force
 ```
 
-명령은 이후 추가될 references나 assets를 포함해 스킬 디렉터리 전체를 복사합니다. 다시 실행해도 설치본이 같으면 변경하지 않습니다. 기존 설치 파일이 패키지 파일과 다르면 로컬 변경을 덮어쓰지 않고 중단합니다. 패키지 파일을 교체하려면 `npm run build -- --force`를 사용하세요. PowerShell에서는 `npm.cmd run build -- --force`를 사용합니다. 대상의 추가 파일은 보존합니다. 생성된 `.agent/` 디렉터리는 Git에서 제외됩니다.
+명령은 이후 추가될 references나 assets를 포함해 스킬 디렉터리 전체를 복사합니다. 다시 실행해도 설치본이 같으면 변경하지 않습니다. 기존 설치 파일이 패키지 파일과 다르면 로컬 변경을 덮어쓰지 않고 중단합니다. 패키지 파일을 교체하려면 `npm run build -- --force`를 사용하세요. PowerShell에서는 `npm.cmd run build -- --force`를 사용합니다. 대상의 추가 파일은 보존합니다. 생성된 `.agents/` 디렉터리는 Git에서 제외됩니다.
 
 설치된 스킬은 로케일 구조 감사, 새 로케일 추가, i18n 구현 또는 마이그레이션에 사용합니다. 감사 모드는 읽기 전용입니다. 구현 모드는 저장소 규칙을 따르며, 해결되지 않은 중요한 결정을 구현하기 전에 확인합니다.
 

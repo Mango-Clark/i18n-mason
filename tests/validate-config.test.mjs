@@ -206,7 +206,7 @@ test('build installer copies the complete skill, is repeatable, and preserves lo
 
   const first = await installSkill({ source, project });
   assert.equal(first.changed, true);
-  assert.equal(first.destination, join(project, '.agent', 'skills', 'i18n-mason'));
+  assert.equal(first.destination, join(project, '.agents', 'skills', 'i18n-mason'));
   assert.equal(await readFile(join(first.destination, 'references', 'guide.md'), 'utf8'), '# guide\n');
   assert.equal((await installSkill({ source, project })).changed, false);
 
