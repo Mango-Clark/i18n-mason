@@ -10,9 +10,30 @@ English: [README.md](README.md)
 
 기본 언어, 외부에 노출되는 로케일 식별자, URL, 대체 언어(fallback), 현지화 범위와 번역 소유권은 사용자 경험과 호환성에 영향을 줍니다. 저장소에 답이 있으면 그 근거를 따릅니다. 근거가 없으면 임의로 결정하지 않고, 확인된 사실·추정·충돌을 구분한 뒤 구현을 바꾸는 데 필요한 질문만 묶어서 합니다. 저장소가 이미 정한 서식이나 규칙은 사용자에게 되묻지 않습니다.
 
-## 사용법
+## 프로젝트에 설치하기
 
-`skills/i18n-mason` 디렉터리를 에이전트 스킬 디렉터리에 복사하세요. Codex에서는 `$CODEX_HOME/skills/i18n-mason`을 사용합니다. `CODEX_HOME`이 설정되지 않았다면 `~/.codex/skills/i18n-mason`에 복사하세요. 다른 에이전트는 자체 스킬 디렉터리를 사용합니다. 로케일 구조 감사, 새 로케일 추가, i18n 구현 또는 마이그레이션 작업에서 호출합니다. 감사 모드는 읽기 전용입니다. 구현 모드는 저장소 규칙을 따르며, 해결되지 않은 중요한 결정을 구현하기 전에 확인합니다.
+이 저장소에서 다음 명령을 실행하면 현재 프로젝트의 `.agent` 디렉터리에 스킬을 설치합니다.
+
+```sh
+npm run build
+```
+
+스킬은 `.agent/skills/i18n-mason`에 복사됩니다. 다른 프로젝트를 대상으로 하려면 경로를 지정하세요.
+
+```sh
+npm run build -- --project ../my-app
+```
+
+PowerShell에서는 npm이 인자를 스크립트에 전달하도록 명령 shim을 명시하세요.
+
+```powershell
+npm.cmd run build -- --project ..\my-app
+npm.cmd run build -- --project ..\my-app --force
+```
+
+명령은 이후 추가될 references나 assets를 포함해 스킬 디렉터리 전체를 복사합니다. 다시 실행해도 설치본이 같으면 변경하지 않습니다. 기존 설치 파일이 패키지 파일과 다르면 로컬 변경을 덮어쓰지 않고 중단합니다. 패키지 파일을 교체하려면 `npm run build -- --force`를 사용하세요. PowerShell에서는 `npm.cmd run build -- --force`를 사용합니다. 대상의 추가 파일은 보존합니다. 생성된 `.agent/` 디렉터리는 Git에서 제외됩니다.
+
+설치된 스킬은 로케일 구조 감사, 새 로케일 추가, i18n 구현 또는 마이그레이션에 사용합니다. 감사 모드는 읽기 전용입니다. 구현 모드는 저장소 규칙을 따르며, 해결되지 않은 중요한 결정을 구현하기 전에 확인합니다.
 
 ## 로케일 의도 설정
 
@@ -70,6 +91,7 @@ node scripts/validate-config.mjs path/to/i18n-mason.toml
 - `tests/fixtures/`: 서로 다른 아키텍처를 보여주는 코드·리소스 fixture.
 - `tests/scenarios.md`와 `tests/scenarios.ko.md`: 에이전트 동작 평가용 수동 시나리오.
 - `scripts/validate-config.mjs`: 오프라인 설정 검증기.
+- `scripts/install-skill.mjs`: `npm run build`에서 사용하는 프로젝트별 스킬 설치기.
 
 자동 테스트는 웹 라우팅, 기능별 namespace, TypeScript 사전, 일반 JSON, gettext, Fluent CLI, ICU와 placeholder, fallback, 생성 파일, 서버·클라이언트 오류 현지화 경계, RTL 메타데이터, 혼합 모노레포의 fixture 코드를 확인합니다. 수동 에이전트 평가 시나리오도 함께 제공합니다. 이 fixture가 모든 프레임워크나 플랫폼을 지원한다는 뜻은 아닙니다. 실제 프로젝트에는 해당 플랫폼의 런타임 검증이 필요합니다.
 

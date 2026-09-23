@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { parseConfig, validateConfigFile } from '../scripts/validate-config.mjs';
+import { installSkill } from '../scripts/install-skill.mjs';
 import { fileURLToPath } from 'node:url';
 import { pathToFileURL } from 'node:url';
 
@@ -192,4 +193,38 @@ test('RTL locale support is checked through application direction and logical la
   assert.match(markup, /lang="ar" dir="rtl"/);
   assert.match(styles, /margin-inline-start/);
   assert.match(styles, /text-align: start/);
+});
+
+test('build installer copies the complete skill, is repeatable, and preserves local files', async (t) => {
+  const root = await mkdtemp(join(tmpdir(), 'i18n-mason-install-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const source = join(root, 'source');
+  const project = join(root, 'project');
+  await mkdir(join(source, 'references'), { recursive: true });
+  await writeFile(join(source, 'SKILL.md'), '# fixture skill\n');
+  await writeFile(join(source, 'references', 'guide.md'), '# guide\n');
+
+  const first = await installSkill({ source, project });
+  assert.equal(first.changed, true);
+  assert.equal(first.destination, join(project, '.agent', 'skills', 'i18n-mason'));
+  assert.equal(await readFile(join(first.destination, 'references', 'guide.md'), 'utf8'), '# guide\n');
+  assert.equal((await installSkill({ source, project })).changed, false);
+
+  await writeFile(join(first.destination, 'local-notes.md'), 'keep this file\n');
+  await writeFile(join(first.destination, 'SKILL.md'), '# local edit\n');
+  await assert.rejects(installSkill({ source, project }), /modified or conflicting files.*--force/);
+  assert.equal(await readFile(join(first.destination, 'SKILL.md'), 'utf8'), '# local edit\n');
+
+  const forced = await installSkill({ source, project, force: true });
+  assert.equal(forced.changed, true);
+  assert.equal(await readFile(join(first.destination, 'SKILL.md'), 'utf8'), '# fixture skill\n');
+  assert.equal(await readFile(join(first.destination, 'local-notes.md'), 'utf8'), 'keep this file\n');
+});
+
+test('build installer rejects a source without SKILL.md', async (t) => {
+  const root = await mkdtemp(join(tmpdir(), 'i18n-mason-invalid-source-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const source = join(root, 'source');
+  await mkdir(source);
+  await assert.rejects(installSkill({ source, project: join(root, 'project') }), /missing SKILL.md/);
 });

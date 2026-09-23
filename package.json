@@ -5,6 +5,7 @@
   "description": "A framework-neutral agent skill for discovering, shaping, and validating project i18n architecture.",
   "type": "module",
   "scripts": {
+    "build": "node scripts/install-skill.mjs",
     "test": "node --test --test-isolation=none",
     "validate": "node scripts/validate-config.mjs"
   },

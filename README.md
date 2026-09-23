@@ -10,9 +10,30 @@ The skill fits the project that exists. It does not assume React, JavaScript, we
 
 Defaults, public locale identifiers, routes, fallback, localization coverage, and translation ownership affect real users, compatibility, and release behavior. A repository often contains the answer; when it does not, silently choosing is an architectural decision disguised as implementation. i18n-mason reports what it observed, labels inferences and conflicts, then batches the few consequential questions evidence cannot settle. It infers formatting and established local conventions without burdening the user.
 
-## Use
+## Install into a project
 
-Copy the `skills/i18n-mason` directory into your agent's skill directory. For Codex, use `$CODEX_HOME/skills/i18n-mason` (or `~/.codex/skills/i18n-mason` when `CODEX_HOME` is unset); other agents use their own skill directory. Invoke the skill for a locale architecture audit, a new locale, an i18n implementation, or a migration. Audit mode is read-only; implementation follows repository conventions and resolves consequential unknowns before dependent changes.
+From this repository, install the skill into the current project's `.agent` directory:
+
+```sh
+npm run build
+```
+
+This copies the skill to `.agent/skills/i18n-mason`. To install into another project, pass its path:
+
+```sh
+npm run build -- --project ../my-app
+```
+
+In PowerShell, invoke the command shim explicitly so npm forwards the arguments:
+
+```powershell
+npm.cmd run build -- --project ..\my-app
+npm.cmd run build -- --project ..\my-app --force
+```
+
+The command copies the complete skill directory, including future references or assets. Re-running it leaves an identical installation alone. If packaged files differ from an existing installation, it stops instead of overwriting local edits; use `npm run build -- --force` (or `npm.cmd run build -- --force` in PowerShell) to replace those packaged files. Extra files in the destination are preserved. The generated `.agent/` directory is git-ignored.
+
+Invoke the installed skill for a locale architecture audit, a new locale, an i18n implementation, or a migration. Audit mode is read-only; implementation follows repository conventions and resolves consequential unknowns before dependent changes.
 
 ## Locale intent configuration
 
@@ -72,6 +93,7 @@ In this repository, the root contract applies to the package's prose documentati
 - `tests/scenarios.md`: manual acceptance prompts for evaluating agent decisions.
 - `tests/scenarios.ko.md`: Korean version of the manual acceptance prompts.
 - `scripts/validate-config.mjs`: offline root-config validator.
+- `scripts/install-skill.mjs`: project-local skill installer used by `npm run build`.
 
 Automated coverage exercises the config parser and observes real fixture files and code paths for web routing, feature namespaces, homegrown TypeScript catalogs, vanilla JSON, gettext, Fluent CLI, ICU and placeholder contracts, fallback, generated bundles, backend/client error localization boundaries, RTL metadata, and mixed monorepos. Manual agent behavior acceptance prompts live in `tests/scenarios.md`. These fixtures do not establish universal framework support or emulate every platform runtime. Project-specific formats and runtime behavior still require inspection and appropriate native validation.
 

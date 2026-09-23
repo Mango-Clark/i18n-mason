@@ -7,6 +7,7 @@ English: [CONTRIBUTING.md](CONTRIBUTING.md)
 ## 개발
 
 - Node.js 23.6 이상이 필요합니다. 설치나 네트워크 접근 없이 검사를 실행할 수 있습니다.
+- `npm run build`를 실행하면 Git에서 제외되는 `.agent/skills/i18n-mason`에 스킬을 설치합니다.
 - 변경 후 `npm test`와 `npm run validate`를 실행합니다.
 - 런타임 `SKILL.md`는 간결하게 유지하고 조건별 세부 사항은 링크된 문서로 옮깁니다.
 - 새로운 구조나 소스 경계에서 발생한 회귀에는 서로 다른 아키텍처를 보여주는 fixture를 추가합니다. 문구·제목만 확인하는 테스트는 피합니다.
