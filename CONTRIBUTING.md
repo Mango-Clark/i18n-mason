@@ -34,4 +34,4 @@ npm run build
 - Do examples match executable behavior? Do docs state the limits of each validator, test, and fixture?
 - Are paired docs and relative links still correct?
 
-Keep the v1 TOML contract to `version`, `default_locale`, and `locales`. Any schema change needs explicit design rationale and migration considerations. Never add real secrets, proprietary catalogs, or personal data to fixtures.
+The v1 TOML contract requires `version`, `default_locale`, and `locales`; optional repeated `[[scopes]]` records may define path-specific locale intent. Schema changes need explicit design rationale and migration considerations. Never add real secrets, proprietary catalogs, or personal data to fixtures.

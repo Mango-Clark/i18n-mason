@@ -68,6 +68,13 @@ Unless a scenario explicitly asks for implementation, evaluate it as an audit or
 
 ## Greenfield scope
 
+### Overlapping locale path scopes
+
+- **Setup:** create `docs/`, `docs/internal/`, and `docs/internal/policy.md`; configure root locales plus scopes for `docs`, `docs/internal`, and the exact file.
+- **Prompt:** audit configured scope intent against repository paths and observed locale implementation.
+- **Expected:** verify path existence and file/folder type; apply the exact file scope first, otherwise the deepest matching folder, independent of array order. Report missing paths, wrong types, and observed locale mismatches per path. Explain that validation does not check filesystem paths.
+- **Avoid:** treating scope order as priority or inferring filesystem type from TOML syntax.
+
 ### Static site with mixed-language content
 
 - **Fixture:** `fixtures/empty-static`.

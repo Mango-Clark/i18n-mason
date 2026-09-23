@@ -25,6 +25,28 @@ test('accepts multiline locale arrays and comments', () => {
   assert.deepEqual(parseConfig('version=1\ndefault_locale="x#test"\nlocales=["x#test", "en"] # keep values\n').locales, ['x#test', 'en']);
 });
 
+test('accepts path scopes with multiline arrays and validates their shape', () => {
+  const source = `${valid}\n[[scopes]]\npath = "docs"\nlocales = [\n  "en-US", # default\n  "ko-KR",\n]\n\n[[scopes]]\npath="docs/internal.md"\nlocales=["en-US"]\n`;
+  assert.deepEqual(parseConfig(source).scopes, [
+    { path: 'docs', locales: ['en-US', 'ko-KR'] },
+    { path: 'docs/internal.md', locales: ['en-US'] },
+  ]);
+  for (const [scope, fragment] of [
+    ['path="docs"', 'missing required key "locales"'],
+    ['locales=["en-US"]', 'missing required key "path"'],
+    ['path="../docs"\nlocales=["en-US"]', 'invalid scope path'],
+    ['path="/docs"\nlocales=["en-US"]', 'invalid scope path'],
+    ['path="docs/*.md"\nlocales=["en-US"]', 'invalid scope path'],
+    ['path="docs"\nlocales=["en-US", "en-US"]', 'duplicates'],
+    ['path="docs"\nlocales=["ko-KR"]', 'default_locale must be included'],
+    ['path="docs"\nlocales=["en-US"]\nunknown="x"', 'unsupported scope key'],
+    ['path="docs"\npath="other"\nlocales=["en-US"]', 'duplicate key'],
+  ]) {
+    assert.throws(() => parseConfig(`${valid}\n[[scopes]]\n${scope}\n`), new RegExp(fragment));
+  }
+  assert.throws(() => parseConfig(`${valid}\n[[scopes]]\npath="docs"\nlocales=["en-US"]\n[[scopes]]\npath="docs"\nlocales=["en-US"]`), /Duplicate scope path/);
+});
+
 test('rejects malformed, ambiguous, or invalid config with actionable errors', () => {
   for (const [source, fragment] of [
     ['version=1\ndefault_locale="en"\nlocales=["en"]\nframework="next-intl"', 'unsupported TOML syntax or key'],

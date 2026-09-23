@@ -54,7 +54,7 @@ default_locale = "en-US"
 locales = ["en-US", "fr-FR"]
 ```
 
-Replace these example values with that product's actual identifiers. The file records desired locale intent; it does not configure a framework, routes, resource formats, fallback, or runtime behavior. Those must be discovered in the project. The skill reports differences between intent and observed behavior instead of silently rewriting either. See [the v1 configuration guide](docs/configuration.md).
+Replace these example values with that product's actual identifiers. Optional `[[scopes]]` records can replace the root locales for repository paths. The file does not configure a framework, routes, resource formats, fallback, or runtime behavior. Those must be discovered in the project. The skill reports differences between intent and observed behavior instead of silently rewriting either. See [the v1 configuration guide](docs/configuration.md).
 
 ## How a task proceeds
 
@@ -86,9 +86,9 @@ npm run validate
 node scripts/validate-config.mjs path/to/i18n-mason.toml
 ```
 
-The validator checks only the small v1 TOML contract. It does not prove a target application's locale coverage, message correctness, routes, or runtime behavior. The automated suite inspects representative heterogeneous fixtures; it does not execute an agent or prove universal framework support. Manual agent-behavior prompts are in `tests/scenarios.md`.
+The validator checks only the small v1 TOML contract, including scope syntax but not filesystem paths. Projects using scopes need an updated validator and skill; existing v1 projects need no migration. It does not prove a target application's locale coverage, message correctness, routes, or runtime behavior. The automated suite inspects representative heterogeneous fixtures; it does not execute an agent or prove universal framework support. Manual agent-behavior prompts are in `tests/scenarios.md`.
 
-In this repository, `i18n-mason.toml` describes prose documentation: English (`en-US`) is canonical, with Korean (`ko-KR`) in paired documents. The runtime `SKILL.md` intentionally remains English. Code, tests, and machine-facing files are outside that documentation locale scope.
+In this repository, `i18n-mason.toml` describes prose documentation: English (`en-US`) is canonical, with Korean (`ko-KR`) in paired documents. It also gives `skills/i18n-mason/SKILL.md` an explicit English-only scope. Code, tests, and machine-facing files are outside that documentation locale scope.
 
 ## Project map
 
