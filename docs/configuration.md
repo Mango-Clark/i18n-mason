@@ -2,35 +2,62 @@
 
 한국어 문서: [configuration.ko.md](configuration.ko.md)
 
-The root configuration records supported locale intent, independently of implementation. Keep framework and runtime details discoverable from the codebase.
+This file records **which locale identifiers a product intends to support**. It is deliberately separate from framework configuration: it does not install or configure a runtime, and it does not say how a locale is selected or how messages are stored.
+
+## Create the file
+
+Place `i18n-mason.toml` at the target project's repository root. Replace the example values below with the exact identifiers used or intended by that product:
 
 ```toml
 version = 1
-default_locale = "ko-KR"
-locales = ["ko-KR", "en-US", "ja-JP"]
+default_locale = "en-US"
+locales = ["en-US", "fr-FR"]
 ```
+
+`default_locale` must appear exactly in `locales`. Identifiers are opaque strings in v1: the validator preserves spelling and order and does not decide whether a value is a valid BCP 47 tag. Do not change `en` to `en-US`, or normalize a legacy/public identifier, just to satisfy this file. Investigate the product contract first.
 
 ## Schema
 
 | Key | Type | Required | Meaning |
 | --- | --- | --- | --- |
-| `version` | integer | yes | Schema version; v1 accepts exactly `1`. |
-| `default_locale` | non-empty string | yes | The intended product default, included exactly in `locales`. |
-| `locales` | non-empty array of distinct non-empty strings | yes | Product locale identifiers. Preserve exact values and order. |
+| `version` | integer | yes | Schema version. v1 accepts exactly `1`. |
+| `default_locale` | non-empty string | yes | Intended product default; must exactly match one item in `locales`. |
+| `locales` | non-empty array of distinct non-empty strings | yes | Intended locale identifiers. Exact spelling and order are preserved. |
 
-The validator accepts ordinary TOML whitespace, full-line and trailing comments, unescaped double-quoted strings, and single- or multiline locale arrays. It rejects duplicate keys/locales, unknown fields, missing fields, empty values, and unsupported versions. It deliberately does not canonicalize or syntactically restrict locale tags: products can have public or legacy identifiers whose behavior must be discovered, not guessed. Escaped strings and general TOML tables are outside this deliberately small v1 schema. Use only the three required root fields.
+These are the only supported root keys. Do not add routes, frameworks, catalog paths, fallback rules, or speculative per-app configuration to v1. Discover implementation details from the target codebase.
 
-Example checks:
+## Validate syntax
+
+From this repository, check the root example:
 
 ```sh
 npm run validate
+```
+
+To validate a file elsewhere, pass its path to the script:
+
+```sh
 node scripts/validate-config.mjs path/to/i18n-mason.toml
 ```
 
-Configuration validity does not prove resource coverage, routing, translation quality, or runtime support. Those require repository-specific evidence and checks.
+The bundled validator supports ordinary whitespace, full-line and trailing comments, basic double-quoted strings without escapes, and single- or multiline arrays of such strings. It rejects unsupported TOML syntax (including tables and escaped strings), unknown or duplicate keys, missing keys, duplicate or empty locale values, an absent default locale, and versions other than `1`. This is a deliberately narrow v1 parser, not a general TOML implementation.
 
-## Desired and observed state
+For example, this is rejected because the default is not an exact member of the declared list:
 
-Treat this file as a desired locale contract; inspect running code, resources, tests, routes, generation scripts, and documentation to establish observed state. Report differences without silently overwriting either side. Check whether discrepancies reflect legacy identifiers, a separate monorepo scope, generated/environment-specific config, or an incomplete change. Ask the user if evidence cannot identify intent.
+```toml
+version = 1
+default_locale = "en-US"
+locales = ["en", "fr"]
+```
 
-In this repository, the root locale contract covers prose documentation. English (`en-US`) is the canonical source; Korean (`ko-KR`) is maintained in paired documentation files. The runtime skill stays English by explicit scope choice. Code, tests, and machine-facing files are not part of this documentation locale set.
+Fix the declaration only after confirming the intended public/product identifiers. The validator should reveal a mismatch, not dictate how the product names locales.
+
+## Compare intent with implementation
+
+Passing validation proves only that the file follows this small schema. It does not prove translations exist, routes work, fallback is correct, or the runtime supports every declared locale.
+
+Inspect active code paths, resources, tests, generation scripts, deployment settings, and relevant product docs. Compare those observations with the TOML and report the difference. A mismatch might be a migration in progress, a legacy identifier, an environment-specific config, or a separate monorepo scope. Do not silently rewrite the file or implementation. Ask the user only when evidence cannot establish which product behavior is intended and the answer changes the design.
+
+## This repository's locale scope
+
+Here the root contract applies to prose documentation: English (`en-US`) is canonical and Korean (`ko-KR`) is maintained in paired docs. The runtime skill remains English by explicit scope choice. Code, tests, and machine-facing files are outside this documentation locale contract.

@@ -2,23 +2,36 @@
 
 한국어 안내: [CONTRIBUTING.ko.md](CONTRIBUTING.ko.md)
 
-Keep changes aligned with the project contract in `goal.md`: inspect real codebases, preserve project-specific architecture, and ask about consequential decisions that evidence cannot settle.
+Changes should serve the project contract in `goal.md`: inspect real codebases, preserve project-specific architecture, and ask about consequential decisions that evidence cannot settle.
 
-## Development
+## Work on the repository
 
-- Requires Node.js 23.6+; no install step or network access is required.
-- Run `npm run build` to install the skill locally into the ignored `.agents/skills/i18n-mason` directory.
-- Run `npm test` and `npm run validate` after changes.
-- Keep the runtime `SKILL.md` concise; move conditional detail into focused linked docs.
-- Add heterogeneous evidence-based fixture cases when a regression involves a new architecture or source boundary. Avoid tests that only assert prose or headings.
-- Keep the v1 TOML contract to `version`, `default_locale`, and `locales`; change the schema only with explicit design rationale and migration considerations.
-- Do not put real project secrets, proprietary catalogs, or personal data in fixtures.
+Requires Node.js 23.6 or newer. No dependency installation or network access is needed for the built-in checks.
 
-## Review checklist
+```sh
+npm test
+npm run validate
+npm run build
+```
 
-- Does the change improve architecture discovery or behavior on an actual project shape?
-- Are observed facts, inference, unknowns, and recommendations distinct?
+`npm run build` installs the skill into this repository's ignored `.agents/skills/i18n-mason` directory. In PowerShell, use `npm.cmd run build` when forwarding options such as `--project` or `--force`.
+
+## Choose the right change location
+
+- Keep `skills/i18n-mason/SKILL.md` focused on instructions the agent needs at runtime. Link to detailed procedures instead of duplicating them.
+- Put investigation method and decision policy in `docs/discovery.md`; keep the TOML contract and validator limits in `docs/configuration.md`.
+- Keep the English prose docs canonical and update their paired Korean documents in the same change. The runtime skill intentionally remains English.
+- Add or change a fixture when the behavior depends on a codebase shape or source boundary. A fixture should show the relevant runtime path, not only a catalog file or prose assertion.
+- Update manual scenarios when a new agent decision or acceptance boundary is introduced. These scenarios are prompts for human/model review, not automated tests.
+
+## Review before submitting
+
+- Does the change improve discovery or behavior for a plausible, evidence-backed project shape?
+- Are observations, inferences, unknowns, conflicts, and recommendations clearly separated?
 - Does it preserve user-visible and machine-facing contracts?
-- Are generated resources traced to their canonical source?
-- Does it introduce assumptions about a framework, locale normalization, or runtime policy?
-- Do docs describe tested capabilities and current limits accurately?
+- Does it trace generated resources back to their editable source?
+- Does it avoid assumptions about frameworks, locale normalization, or runtime policy?
+- Do examples match executable behavior? Do docs state the limits of each validator, test, and fixture?
+- Are paired docs and relative links still correct?
+
+Keep the v1 TOML contract to `version`, `default_locale`, and `locales`. Any schema change needs explicit design rationale and migration considerations. Never add real secrets, proprietary catalogs, or personal data to fixtures.
