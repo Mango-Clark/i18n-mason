@@ -8,13 +8,13 @@ English: [README.md](README.md)
 
 ## 스킬 사용하기
 
-이 저장소에서 프로젝트의 에이전트 스킬 디렉터리로 설치합니다.
+이 저장소에서 사용자 전역 에이전트 스킬 디렉터리로 설치합니다.
 
 ```sh
 npm run build
 ```
 
-전체 스킬이 `.agents/skills/i18n-mason`에 복사됩니다. 다른 프로젝트에 설치하려면 경로를 지정합니다.
+기본적으로 전체 스킬이 `~/.agents/skills/i18n-mason`에 복사됩니다. Windows에서는 사용자 프로필 아래에 설치됩니다. 특정 프로젝트의 `.agents` 디렉터리에 설치하려면 경로를 지정합니다.
 
 ```sh
 npm run build -- --project ../my-app
@@ -42,7 +42,7 @@ npm.cmd run build -- --project ..\my-app
 npm run build -- --force
 ```
 
-PowerShell에서는 `npm.cmd`를 사용합니다. 이 저장소는 생성되는 `.agents/`를 Git에서 제외합니다.
+PowerShell에서는 `npm.cmd`를 사용합니다. 사용자 전역 `.agents` 디렉터리는 필요하면 자동 생성됩니다. `--project`로 이 저장소 안에 설치한 경우에는 로컬 `.agents/`가 Git에서 제외됩니다.
 
 ## 선택 사항: 로케일 의도 파일
 
@@ -97,7 +97,7 @@ node scripts/validate-config.mjs path/to/i18n-mason.toml
 - `docs/configuration.ko.md` — v1 로케일 설정 스키마와 검증 범위.
 - `tests/fixtures/` — 서로 다른 i18n 구조를 보여주는 작은 코드베이스.
 - `tests/scenarios.ko.md` — 에이전트 동작을 평가하는 수동 인수 시나리오.
-- `scripts/install-skill.mjs` — 프로젝트별 스킬 설치기 (`npm run build`).
+- `scripts/install-skill.mjs` — 프로젝트별 경로로도 지정할 수 있는 사용자 전역 스킬 설치기 (`npm run build`).
 - `scripts/validate-config.mjs` — 오프라인 v1 설정 검증기.
 
 ## 라이선스

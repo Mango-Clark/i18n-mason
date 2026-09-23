@@ -14,7 +14,7 @@ npm run validate
 npm run build
 ```
 
-`npm run build` installs the skill into this repository's ignored `.agents/skills/i18n-mason` directory. In PowerShell, use `npm.cmd run build` when forwarding options such as `--project` or `--force`.
+`npm run build` installs the skill into `~/.agents/skills/i18n-mason` (under the user profile on Windows). To install into this repository's ignored local `.agents` directory for inspection, run `npm run build -- --project .`. In PowerShell, use `npm.cmd run build` when forwarding options such as `--project` or `--force`.
 
 ## Choose the right change location
 

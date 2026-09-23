@@ -4,9 +4,10 @@ import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { parseConfig, validateConfigFile } from '../scripts/validate-config.mjs';
-import { installSkill } from '../scripts/install-skill.mjs';
+import { getInstallDestination, installSkill } from '../scripts/install-skill.mjs';
 import { fileURLToPath } from 'node:url';
 import { pathToFileURL } from 'node:url';
+import { homedir } from 'node:os';
 
 const valid = 'version = 1\ndefault_locale = "en-US"\nlocales = ["en-US", "ko-KR"]\n';
 
@@ -195,7 +196,11 @@ test('RTL locale support is checked through application direction and logical la
   assert.match(styles, /text-align: start/);
 });
 
-test('build installer copies the complete skill, is repeatable, and preserves local files', async (t) => {
+test('build installer defaults to the user agents directory', () => {
+  assert.equal(getInstallDestination(), join(homedir(), '.agents', 'skills', 'i18n-mason'));
+});
+
+test('build installer copies the complete skill to a project override and preserves local files', async (t) => {
   const root = await mkdtemp(join(tmpdir(), 'i18n-mason-install-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   const source = join(root, 'source');

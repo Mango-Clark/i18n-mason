@@ -1,10 +1,15 @@
 #!/usr/bin/env node
 import { copyFile, lstat, mkdir, readdir, readFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
+import { homedir } from 'node:os';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const packageRoot = fileURLToPath(new URL('../', import.meta.url));
 const sourceRoot = join(packageRoot, 'skills', 'i18n-mason');
+
+export function getInstallDestination(project = homedir()) {
+  return join(resolve(project), '.agents', 'skills', 'i18n-mason');
+}
 
 async function listFiles(directory, prefix = '') {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -64,12 +69,12 @@ async function assertNoSymlinkComponents(project, destination) {
 
 export async function installSkill({
   source = sourceRoot,
-  project = process.cwd(),
+  project = homedir(),
   force = false,
 } = {}) {
   const resolvedSource = resolve(source);
   const resolvedProject = resolve(project);
-  const destination = join(resolvedProject, '.agents', 'skills', 'i18n-mason');
+  const destination = getInstallDestination(resolvedProject);
   const sourceInfo = await lstat(resolvedSource);
   if (!sourceInfo.isDirectory()) throw new Error(`Skill source is not a directory: ${resolvedSource}`);
   try {
@@ -109,7 +114,7 @@ export async function installSkill({
 }
 
 function parseArgs(args) {
-  let project = process.cwd();
+  let project = homedir();
   let force = false;
   for (let index = 0; index < args.length; index += 1) {
     if (args[index] === '--force') {

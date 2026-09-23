@@ -14,7 +14,7 @@ npm run validate
 npm run build
 ```
 
-`npm run build`는 이 저장소에서 Git 제외 경로인 `.agents/skills/i18n-mason`에 스킬을 설치합니다. PowerShell에서 `--project`나 `--force` 옵션을 전달할 때는 `npm.cmd run build`를 사용합니다.
+`npm run build`는 사용자 프로필 아래 `~/.agents/skills/i18n-mason`에 스킬을 설치합니다. 확인 목적으로 이 저장소의 Git 제외 로컬 `.agents` 디렉터리에 설치하려면 `npm run build -- --project .`을 실행합니다. PowerShell에서 `--project`나 `--force` 옵션을 전달할 때는 `npm.cmd run build`를 사용합니다.
 
 ## 변경할 문서와 파일 정하기
 

@@ -8,13 +8,13 @@ Its central rule is simple: **discover how this project works before choosing ho
 
 ## Use the skill
 
-Install it into a project's agent skills directory from this repository:
+Install it into your user-level agent skills directory from this repository:
 
 ```sh
 npm run build
 ```
 
-The installer copies the complete skill to `.agents/skills/i18n-mason`. To target another project:
+By default, the installer copies the complete skill to `~/.agents/skills/i18n-mason` (on Windows, under your user profile). To install into a project's local `.agents` directory instead, pass its path:
 
 ```sh
 npm run build -- --project ../my-app
@@ -42,7 +42,7 @@ Running the installer again leaves identical files alone. It refuses to replace 
 npm run build -- --force
 ```
 
-Use `npm.cmd` in PowerShell. The generated `.agents/` directory is git-ignored by this repository.
+Use `npm.cmd` in PowerShell. The installer creates the user-level `.agents` directory if needed. A project-local installation created with `--project` is git-ignored when it is inside this repository.
 
 ## Optional locale intent file
 
@@ -97,7 +97,7 @@ In this repository, `i18n-mason.toml` describes prose documentation: English (`e
 - `docs/configuration.md` — v1 locale intent schema and validator boundaries.
 - `tests/fixtures/` — small codebases used to inspect distinct i18n patterns.
 - `tests/scenarios.md` — manual acceptance prompts for agent behavior.
-- `scripts/install-skill.mjs` — project-local skill installer (`npm run build`).
+- `scripts/install-skill.mjs` — user-level skill installer with an optional project-local override (`npm run build`).
 - `scripts/validate-config.mjs` — offline v1 config validator.
 
 ## License
